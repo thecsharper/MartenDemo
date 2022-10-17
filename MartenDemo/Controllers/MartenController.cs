@@ -1,6 +1,8 @@
 using MartenDemo.Models;
 using Microsoft.AspNetCore.Mvc;
 
+using Marten;
+
 namespace MartenDemo.Controllers
 {
     [ApiController]
@@ -15,14 +17,15 @@ namespace MartenDemo.Controllers
         }
 
         [HttpGet(Name = "GetData")]
-        public IEnumerable<MartenData> Get()
+        public MartenData Get([FromServices] IDocumentSession session, [FromBody] string body)
         {
-            return Enumerable.Range(1, 5).Select(index => new MartenData
+            session.Store(body);
+            session.SaveChangesAsync();
+            return new MartenData
             {
-                Date = DateTime.Now.AddDays(index),
-                Summary = string.Empty
-            })
-            .ToArray();
+                Date = DateTime.UtcNow,
+                Summary = body
+            };
         }
     }
 }
