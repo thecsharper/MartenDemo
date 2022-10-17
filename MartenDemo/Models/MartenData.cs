@@ -4,6 +4,6 @@ namespace MartenDemo.Models
     {
         public DateTime Date { get; set; }
 
-        public string? Summary { get; set; }
+        public Guid Summary { get; set; }
     }
 }
