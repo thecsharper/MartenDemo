@@ -17,15 +17,11 @@ namespace MartenDemo.Controllers
         }
 
         [HttpGet(Name = "GetData")]
-        public MartenData Get([FromServices] IDocumentSession session, [FromQuery] Guid id)
+        public MartenData Get([FromServices] IDocumentSession session, [FromQuery] MartenData martenData)
         {
-            session.Store(id);
+            session.Store(martenData);
             session.SaveChangesAsync();
-            return new MartenData
-            {
-                Date = DateTime.UtcNow,
-                Summary = id
-            };
+            return martenData;
         }
     }
 }
