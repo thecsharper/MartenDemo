@@ -17,10 +17,12 @@ namespace MartenDemo.Controllers
         }
 
         [HttpGet(Name = "GetData")]
-        public MartenData Get([FromServices] IDocumentSession session, [FromQuery] MartenData martenData)
+        public async Task<MartenData> Get([FromServices] IDocumentSession session, [FromQuery] MartenData martenData)
         {
             session.Store(martenData);
-            session.SaveChangesAsync();
+            
+            await session.SaveChangesAsync();
+
             return martenData;
         }
     }
