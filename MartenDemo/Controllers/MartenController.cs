@@ -1,7 +1,7 @@
 using MartenDemo.Models;
 using Microsoft.AspNetCore.Mvc;
-
 using Marten;
+using Marten.AspNetCore;
 
 namespace MartenDemo.Controllers
 {
@@ -16,7 +16,7 @@ namespace MartenDemo.Controllers
             _logger = logger;
         }
 
-        [HttpGet(Name = "GetData")]
+        [HttpGet]
         public async Task<MartenData> Get([FromServices] IDocumentSession session, [FromQuery] MartenData martenData)
         {
             session.Store(martenData);
@@ -26,6 +26,18 @@ namespace MartenDemo.Controllers
             var output = session.Query<MartenData>().First(x=> x.Id == martenData.Id);
 
             return output;
+        }
+
+        [HttpPost]
+        public Task Stream([FromServices] IDocumentSession session, [FromQuery] MartenData martenData)
+        {
+            session.Store(martenData);
+
+            session.SaveChanges();
+
+            var output = session.Query<MartenData>().First(x => x.Id == martenData.Id);
+
+            return session.Json.WriteById<MartenData>(output.Id, HttpContext);
         }
     }
 }
