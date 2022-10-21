@@ -23,7 +23,9 @@ namespace MartenDemo.Controllers
             
             await session.SaveChangesAsync();
 
-            return martenData;
+            var output = session.Query<MartenData>().First(x=> x.Id == martenData.Id);
+
+            return output;
         }
     }
 }
