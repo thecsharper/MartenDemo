@@ -1,7 +1,9 @@
-using MartenDemo.Models;
 using Microsoft.AspNetCore.Mvc;
+
 using Marten;
 using Marten.AspNetCore;
+
+using MartenDemo.Models;
 
 namespace MartenDemo.Controllers
 {
