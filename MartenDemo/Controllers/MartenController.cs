@@ -27,6 +27,8 @@ namespace MartenDemo.Controllers
 
             var output = session.Query<MartenData>().First(x=> x.Id == martenData.Id);
 
+            _logger.LogInformation(output.Id.ToString());
+
             return output;
         }
 
@@ -38,6 +40,8 @@ namespace MartenDemo.Controllers
             session.SaveChanges();
 
             var output = session.Query<MartenData>().First(x => x.Id == martenData.Id);
+
+            _logger.LogInformation(output.Id.ToString());
 
             return session.Json.WriteById<MartenData>(output.Id, HttpContext);
         }
