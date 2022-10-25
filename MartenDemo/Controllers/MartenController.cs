@@ -25,6 +25,7 @@ namespace MartenDemo.Controllers
             
             await session.SaveChangesAsync();
 
+            // TODO move to new class
             var output = session.Query<MartenData>().First(x=> x.Id == martenData.Id);
 
             _logger.LogInformation(output.Id.ToString());
@@ -39,6 +40,7 @@ namespace MartenDemo.Controllers
 
             session.SaveChanges();
 
+            // TODO move to new class
             var output = session.Query<MartenData>().First(x => x.Id == martenData.Id);
 
             _logger.LogInformation(output.Id.ToString());
