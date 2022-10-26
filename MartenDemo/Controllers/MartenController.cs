@@ -12,10 +12,12 @@ namespace MartenDemo.Controllers
     public class MartenController : ControllerBase
     {
         private readonly ILogger<MartenController> _logger;
+        private readonly IMartenQueries _martenQueries;
 
-        public MartenController(ILogger<MartenController> logger)
+        public MartenController(ILogger<MartenController> logger, IMartenQueries martenQueries)
         {
             _logger = logger;
+            _martenQueries = martenQueries;
         }
 
         [HttpGet]
@@ -25,8 +27,7 @@ namespace MartenDemo.Controllers
             
             await session.SaveChangesAsync();
 
-            // TODO move to new class
-            var output = session.Query<MartenData>().First(x=> x.Id == martenData.Id);
+            var output = _martenQueries.QueryData(session, martenData);
 
             _logger.LogInformation(output.Id.ToString());
 
@@ -40,8 +41,7 @@ namespace MartenDemo.Controllers
 
             session.SaveChanges();
 
-            // TODO move to new class
-            var output = session.Query<MartenData>().First(x => x.Id == martenData.Id);
+            var output = _martenQueries.QueryData(session, martenData);
 
             _logger.LogInformation(output.Id.ToString());
 

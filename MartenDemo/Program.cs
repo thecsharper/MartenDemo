@@ -1,4 +1,5 @@
 using Marten;
+using MartenDemo;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddMarten(connection);
+builder.Services.AddTransient<IMartenQueries, MartenQueries>();
 
 var app = builder.Build();
 
