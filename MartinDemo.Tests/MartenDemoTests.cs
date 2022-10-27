@@ -1,5 +1,3 @@
-using Microsoft.Extensions.Logging;
-
 using Marten;
 
 using Moq;
@@ -13,15 +11,6 @@ namespace MartinDemo.Tests
 {
     public class MartenDemoTests
     {
-        private readonly Mock<ILogger<MartenController>> _logger;
-        private Mock<IMartenQueries> _martenQueries;
-
-        public MartenDemoTests()
-        {
-            _logger = new Mock<ILogger<MartenController>>();
-            _martenQueries = new Mock<IMartenQueries>();
-        }
-
         [Fact]
         public async Task Marten_Controller_Get()
         {
