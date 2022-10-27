@@ -1,7 +1,6 @@
 using Microsoft.Extensions.Logging;
 
 using Marten;
-using Marten.Linq;
 
 using Moq;
 using Moq.AutoMock;
@@ -28,22 +27,16 @@ namespace MartinDemo.Tests
         {
             var session = new Mock<IDocumentSession>();
 
-            var martenInput = new MartenData()
+            var martenInput = new MartenData
             {
                 Id = Guid.NewGuid(),
                 Date = DateTime.UtcNow
             };
 
-            var testData = new[]
-            {
-               martenInput
-            }.AsQueryable();
-
-            var martenData = new Mock<IMartenQueryable<MartenData>>();
             var mocker = new AutoMocker();
+            mocker.Use<IMartenQueries>(mock => mock.QueryData(It.IsAny<Guid>()) == martenInput);
             var controller = mocker.CreateInstance<MartenController>();
-            _martenQueries.Setup(x => x.QueryData(It.IsAny<IDocumentSession>(), It.IsAny<MartenData>())).Returns(martenInput);
-
+            
             controller.Stream(session.Object, martenInput);
         }
     }

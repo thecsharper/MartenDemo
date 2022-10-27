@@ -27,7 +27,7 @@ namespace MartenDemo.Controllers
             
             await session.SaveChangesAsync();
 
-            var output = _martenQueries.QueryData(session, martenData);
+            var output = _martenQueries.QueryData(martenData.Id);
 
             _logger.LogInformation(output.Id.ToString());
 
@@ -41,7 +41,7 @@ namespace MartenDemo.Controllers
 
             session.SaveChanges();
 
-            var output = _martenQueries.QueryData(session, martenData);
+            var output = _martenQueries.QueryData(martenData.Id);
 
             _logger.LogInformation(output.Id.ToString());
 

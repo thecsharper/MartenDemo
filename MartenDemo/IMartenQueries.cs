@@ -5,6 +5,6 @@ namespace MartenDemo
 {
     public interface IMartenQueries
     {
-        MartenData QueryData(IDocumentSession session, MartenData martenData);
+        MartenData QueryData(Guid id);
     }
 }
