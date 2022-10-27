@@ -1,5 +1,4 @@
-﻿using Marten;
-using MartenDemo.Models;
+﻿using MartenDemo.Models;
 
 namespace MartenDemo
 {
