@@ -30,6 +30,7 @@ namespace MartinDemo.Tests
 
             result.Id.Should().Be(martenInput.Id);
             result.Date.Should().Be(martenInput.Date);
+            result.Text.Should().Be(martenInput.Text);
         }
 
         [Fact]
@@ -52,6 +53,7 @@ namespace MartinDemo.Tests
 
             result.First().Id.Should().Be(martenInput.Id);
             result.First().Date.Should().Be(martenInput.Date);
+            result.First().Text.Should().Be(martenInput.Text);
         }
 
         [Fact]
@@ -74,7 +76,8 @@ namespace MartinDemo.Tests
             return new MartenData
             {
                 Id = Guid.NewGuid(),
-                Date = DateTime.UtcNow
+                Date = DateTime.UtcNow,
+                Text = "Test Text"
             };
         }
     }
