@@ -8,12 +8,20 @@ using MartenDemo.Controllers;
 using MartenDemo.Models;
 using MartenDemo;
 using System.ComponentModel;
+using Microsoft.Extensions.Logging;
 
 namespace MartinDemo.Tests
 {
     [Category("Marten Tests")]
     public class MartenDemoTests
     {
+        private readonly Mock<ILogger<MartenController>> _logger;
+
+        public MartenDemoTests()
+        {
+            _logger = new Mock<ILogger<MartenController>>();
+        }
+
         [Fact]
         [Trait("Category", "Unit")]
         public async Task Marten_Controller_Get()
@@ -31,6 +39,15 @@ namespace MartinDemo.Tests
             result.Id.Should().Be(martenInput.Id);
             result.Date.Should().Be(martenInput.Date);
             result.Text.Should().Be(martenInput.Text);
+
+            _logger.Verify(x => x.Log(It.IsAny<LogLevel>(),
+                            It.IsAny<EventId>(),
+                            It.IsAny<It.IsAnyType>(),
+                            It.IsAny<Exception>(),
+                            (Func<It.IsAnyType, Exception, string>)
+                            It.IsAny<object>()),
+                            Times.Once);
+
         }
 
         [Fact]
