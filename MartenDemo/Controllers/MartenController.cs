@@ -20,7 +20,10 @@ namespace MartenDemo.Controllers
             _martenQueries = martenQueries;
         }
 
-        [HttpGet]
+        [HttpGet("single")]
+        [ProducesResponseType(typeof(MartenData),200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
         public async Task<MartenData> Get([FromServices] IDocumentSession session, [FromQuery] MartenData martenData)
         {
             session.Store(martenData);
@@ -34,7 +37,32 @@ namespace MartenDemo.Controllers
             return output;
         }
 
-        [HttpPost]
+        [HttpGet("many")]
+        [ProducesResponseType(typeof(List<MartenData>), 200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public async Task<List<MartenData>> GetData([FromServices] IDocumentSession session, [FromQuery] MartenData martenData)
+        {
+            session.Store(martenData);
+
+            await session.SaveChangesAsync();
+
+            var outputList = new List<MartenData>();
+
+            // TODO add a list method
+            var output = _martenQueries.QueryData(martenData.Id);
+
+            outputList.Add(output);
+
+            _logger.LogInformation(output.Id.ToString());
+
+            return outputList;
+        }
+
+        [HttpPost("stream")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
         public Task Stream([FromServices] IDocumentSession session, [FromQuery] MartenData martenData)
         {
             session.Store(martenData);

@@ -1,5 +1,6 @@
 using Marten;
 using MartenDemo;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +17,13 @@ var connection = configuration.GetConnectionString("Marten");
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+builder.Services.AddSwaggerGen(c => 
+{
+    //c.SwaggerDoc("v2", new OpenApiInfo { Title = "Test API", Version = "0.0.1" });
+    //c.ResolveConflictingActions(x => x.First());
+});
+
 builder.Services.AddMarten(connection);
 builder.Services.AddTransient<IMartenQueries, MartenQueries>();
 
@@ -26,7 +33,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MartenDemo v1"));
 }
 
 app.UseHttpsRedirection();
