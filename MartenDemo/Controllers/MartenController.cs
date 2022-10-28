@@ -30,7 +30,7 @@ namespace MartenDemo.Controllers
             
             await session.SaveChangesAsync();
 
-            var output = _martenQueries.QueryData(martenData.Id);
+            var output = _martenQueries.GetSingleItem(martenData.Id);
 
             _logger.LogInformation(output.Id.ToString());
 
@@ -47,16 +47,12 @@ namespace MartenDemo.Controllers
 
             await session.SaveChangesAsync();
 
-            var outputList = new List<MartenData>();
-
             // TODO add a list method
-            var output = _martenQueries.QueryData(martenData.Id);
+            var output = _martenQueries.GetManyItems(martenData.Id);
 
-            outputList.Add(output);
+            output.ForEach(x => _logger.LogInformation(x.Id.ToString()));
 
-            _logger.LogInformation(output.Id.ToString());
-
-            return outputList;
+            return output;
         }
 
         [HttpPost("stream")]
@@ -69,7 +65,7 @@ namespace MartenDemo.Controllers
 
             session.SaveChanges();
 
-            var output = _martenQueries.QueryData(martenData.Id);
+            var output = _martenQueries.GetSingleItem(martenData.Id);
 
             _logger.LogInformation(output.Id.ToString());
 

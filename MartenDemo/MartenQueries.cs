@@ -12,9 +12,16 @@ namespace MartenDemo
             _documentSession = documentSession;
         }
 
-        public MartenData QueryData(Guid id)
+        public MartenData GetSingleItem(Guid id)
         {
             var output = _documentSession.Query<MartenData>().First(x => x.Id == id);
+
+            return output;
+        }
+
+        public List<MartenData> GetManyItems(Guid id)
+        {
+            var output = _documentSession.Query<MartenData>().Where(x => x.Id == id).ToList();
 
             return output;
         }

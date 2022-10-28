@@ -4,6 +4,8 @@ namespace MartenDemo
 {
     public interface IMartenQueries
     {
-        MartenData QueryData(Guid id);
+        MartenData GetSingleItem(Guid id);
+
+        List<MartenData> GetManyItems(Guid id);
     }
 }
