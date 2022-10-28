@@ -1,5 +1,6 @@
 using Marten;
 
+using FluentAssertions;
 using Moq;
 using Moq.AutoMock;
 
@@ -16,17 +17,24 @@ namespace MartinDemo.Tests
         {
             var session = new Mock<IDocumentSession>();
 
+
+            var id = Guid.NewGuid();
+            var martenDate = DateTime.UtcNow;
+
             var martenInput = new MartenData
             {
-                Id = Guid.NewGuid(),
-                Date = DateTime.UtcNow
+                Id = id,
+                Date = martenDate
             };
 
             var mocker = new AutoMocker();
             mocker.Use<IMartenQueries>(mock => mock.QueryData(It.IsAny<Guid>()) == martenInput);
             var controller = mocker.CreateInstance<MartenController>();
 
-            await controller.Get(session.Object, martenInput);
+            var result = await controller.Get(session.Object, martenInput);
+
+            result.Id.Should().Be(id);
+            result.Date.Should().Be(martenDate);
         }
 
         [Fact]
