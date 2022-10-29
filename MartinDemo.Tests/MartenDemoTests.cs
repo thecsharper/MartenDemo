@@ -42,6 +42,9 @@ namespace MartinDemo.Tests
             result.Text.Should().Be(martenInput.Text);
 
             VerifyLogging(Times.Once);
+
+            var martenQueriesMock = mocker.GetMock<IMartenQueries>();
+            martenQueriesMock.VerifyAll();
         }
 
         [Fact]
@@ -68,6 +71,9 @@ namespace MartinDemo.Tests
             result.First().Text.Should().Be(martenInput.Text);
 
             VerifyLogging(Times.Once);
+
+            var martenQueriesMock = mocker.GetMock<IMartenQueries>();
+            martenQueriesMock.VerifyAll();
         }
 
         [Fact]
@@ -86,6 +92,9 @@ namespace MartinDemo.Tests
             controller.Stream(session.Object, martenInput);
 
             VerifyLogging(Times.Once);
+
+            var martenQueriesMock = mocker.GetMock<IMartenQueries>();
+            martenQueriesMock.VerifyAll();
         }
 
         private static MartenData GetMartenData()
