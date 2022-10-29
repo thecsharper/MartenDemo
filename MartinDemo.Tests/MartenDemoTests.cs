@@ -40,14 +40,7 @@ namespace MartinDemo.Tests
             result.Date.Should().Be(martenInput.Date);
             result.Text.Should().Be(martenInput.Text);
 
-            _logger.Verify(x => x.Log(It.IsAny<LogLevel>(),
-                            It.IsAny<EventId>(),
-                            It.IsAny<It.IsAnyType>(),
-                            It.IsAny<Exception>(),
-                            (Func<It.IsAnyType, Exception, string>)
-                            It.IsAny<object>()),
-                            Times.Once);
-
+            VerifyLogging();
         }
 
         [Fact]
@@ -96,6 +89,17 @@ namespace MartinDemo.Tests
                 Date = DateTime.UtcNow,
                 Text = "Test Text"
             };
+        }
+
+        private void VerifyLogging()
+        {
+            _logger.Verify(x => x.Log(It.IsAny<LogLevel>(),
+                           It.IsAny<EventId>(),
+                           It.IsAny<It.IsAnyType>(),
+                           It.IsAny<Exception>(),
+                           (Func<It.IsAnyType, Exception, string>)
+                           It.IsAny<object>()),
+                           Times.Once);
         }
     }
 }
