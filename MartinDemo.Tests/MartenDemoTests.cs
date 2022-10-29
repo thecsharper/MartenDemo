@@ -1,14 +1,14 @@
-using Marten;
+using System.ComponentModel;
+using Microsoft.Extensions.Logging;
 
 using FluentAssertions;
 using Moq;
 using Moq.AutoMock;
+using Marten;
 
 using MartenDemo.Controllers;
 using MartenDemo.Models;
 using MartenDemo;
-using System.ComponentModel;
-using Microsoft.Extensions.Logging;
 
 namespace MartinDemo.Tests
 {
@@ -32,15 +32,16 @@ namespace MartinDemo.Tests
 
             var mocker = new AutoMocker();
             mocker.Use<IMartenQueries>(mock => mock.GetSingleItem(It.IsAny<Guid>()) == martenInput);
+            mocker.Use(_logger);
             var controller = mocker.CreateInstance<MartenController>();
-
+            
             var result = await controller.Get(session.Object, martenInput);
 
             result.Id.Should().Be(martenInput.Id);
             result.Date.Should().Be(martenInput.Date);
             result.Text.Should().Be(martenInput.Text);
 
-            VerifyLogging();
+            VerifyLogging(Times.Once);
         }
 
         [Fact]
@@ -57,6 +58,7 @@ namespace MartinDemo.Tests
 
             var mocker = new AutoMocker();
             mocker.Use<IMartenQueries>(mock => mock.GetManyItems(It.IsAny<Guid>()) == martenList);
+            mocker.Use(_logger);
             var controller = mocker.CreateInstance<MartenController>();
 
             var result = await controller.GetData(session.Object, martenInput);
@@ -64,6 +66,8 @@ namespace MartinDemo.Tests
             result.First().Id.Should().Be(martenInput.Id);
             result.First().Date.Should().Be(martenInput.Date);
             result.First().Text.Should().Be(martenInput.Text);
+
+            VerifyLogging(Times.Once);
         }
 
         [Fact]
@@ -76,9 +80,12 @@ namespace MartinDemo.Tests
 
             var mocker = new AutoMocker();
             mocker.Use<IMartenQueries>(mock => mock.GetSingleItem(It.IsAny<Guid>()) == martenInput);
+            mocker.Use(_logger);
             var controller = mocker.CreateInstance<MartenController>();
-            
+
             controller.Stream(session.Object, martenInput);
+
+            VerifyLogging(Times.Once);
         }
 
         private static MartenData GetMartenData()
@@ -91,15 +98,15 @@ namespace MartinDemo.Tests
             };
         }
 
-        private void VerifyLogging()
+        private void VerifyLogging(Func<Times> times)
         {
-            _logger.Verify(x => x.Log(It.IsAny<LogLevel>(),
-                           It.IsAny<EventId>(),
-                           It.IsAny<It.IsAnyType>(),
-                           It.IsAny<Exception>(),
-                           (Func<It.IsAnyType, Exception, string>)
-                           It.IsAny<object>()),
-                           Times.Once);
+            _logger.Verify(
+             x => x.Log(
+                 It.Is<LogLevel>(l => l == LogLevel.Information),
+                 It.IsAny<EventId>(),
+                 It.Is<It.IsAnyType>((v, t) => true),
+                 It.IsAny<Exception>(),
+                 It.Is<Func<It.IsAnyType, Exception, string>>((v, t) => true)), times);
         }
     }
 }
