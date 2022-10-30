@@ -1,6 +1,6 @@
 namespace MartenDemo.Models
 {
-    public class MartenData
+    public record MartenData
     {
         public DateTime Date { get; set; }
 
