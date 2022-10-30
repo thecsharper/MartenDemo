@@ -25,5 +25,12 @@ namespace MartenDemo
 
             return output;
         }
+
+        public List<MartenData> GetByString(string input)
+        {
+            var output = _documentSession.Query<MartenData>().Where(x => x.Text.Contains(input)).ToList();
+
+            return output;
+        }
     }
 }
