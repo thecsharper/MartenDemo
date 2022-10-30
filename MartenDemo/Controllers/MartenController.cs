@@ -21,7 +21,7 @@ namespace MartenDemo.Controllers
         }
 
         [HttpGet("create")]
-        [ProducesResponseType(typeof(MartenData), 200)]
+        [ProducesResponseType(typeof(bool), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         public async Task<bool> Create([FromServices] IDocumentSession session)
@@ -47,6 +47,19 @@ namespace MartenDemo.Controllers
             var output = _martenQueries.GetByString(input);
 
             _logger.LogInformation(input);
+
+            return output;
+        }
+
+        [HttpGet("count")]
+        [ProducesResponseType(typeof(int), 200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public int Count([FromServices] IDocumentSession session)
+        {
+            var output = _martenQueries.GetCount();
+
+            _logger.LogInformation(output.ToString());
 
             return output;
         }

@@ -9,5 +9,7 @@ namespace MartenDemo
         List<MartenData> GetManyItems(Guid id);
 
         List<MartenData> GetByString(string input);
+
+        int GetCount();
     }
 }
