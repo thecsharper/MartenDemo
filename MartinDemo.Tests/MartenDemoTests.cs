@@ -49,6 +49,57 @@ namespace MartinDemo.Tests
 
         [Fact]
         [Trait("Category", "Unit")]
+        public async Task Marten_Controller_Create()
+        {
+            var session = new Mock<IDocumentSession>();
+
+            var martenInput = GetMartenData();
+
+            var mocker = new AutoMocker();
+            mocker.Use(_logger);
+            var controller = mocker.CreateInstance<MartenController>();
+
+            var result = await controller.Create(session.Object);
+
+            result.Should().Be(true);
+
+            VerifyLogging(Times.Once);
+
+            var martenQueriesMock = mocker.GetMock<IMartenQueries>();
+            martenQueriesMock.VerifyAll();
+        }
+
+        [Fact]
+        [Trait("Category", "Unit")]
+        public void Marten_Controller_Search()
+        {
+            var session = new Mock<IDocumentSession>();
+
+            var martenList = new List<MartenData>();
+
+            var martenInput = GetMartenData();
+
+            martenList.Add(martenInput);
+
+            var mocker = new AutoMocker();
+            mocker.Use<IMartenQueries>(mock => mock.GetByString(It.IsAny<string>()) == martenList);
+            mocker.Use(_logger);
+            var controller = mocker.CreateInstance<MartenController>();
+
+            var result = controller.Search(session.Object, "Test Text");
+
+            result.First().Id.Should().Be(martenInput.Id);
+            result.First().Date.Should().Be(martenInput.Date);
+            result.First().Text.Should().Be(martenInput.Text);
+
+            VerifyLogging(Times.Once);
+
+            var martenQueriesMock = mocker.GetMock<IMartenQueries>();
+            martenQueriesMock.VerifyAll();
+        }
+
+        [Fact]
+        [Trait("Category", "Unit")]
         public async Task Marten_Controller_GetData()
         {
             var session = new Mock<IDocumentSession>();
