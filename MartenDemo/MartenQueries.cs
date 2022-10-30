@@ -32,5 +32,12 @@ namespace MartenDemo
 
             return output;
         }
+
+        public int GetCount()
+        {
+            var output = _documentSession.Query<MartenData>().ToArray();
+
+            return output.Length;
+        }
     }
 }
