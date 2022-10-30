@@ -100,6 +100,27 @@ namespace MartinDemo.Tests
 
         [Fact]
         [Trait("Category", "Unit")]
+        public void Marten_Controller_Count()
+        {
+            var session = new Mock<IDocumentSession>();
+
+            var mocker = new AutoMocker();
+            mocker.Use<IMartenQueries>(mock => mock.GetCount() == 10);
+            mocker.Use(_logger);
+            var controller = mocker.CreateInstance<MartenController>();
+
+            var result = controller.Count(session.Object);
+
+            result.Should().Be(10);
+
+            VerifyLogging(Times.Once);
+
+            var martenQueriesMock = mocker.GetMock<IMartenQueries>();
+            martenQueriesMock.VerifyAll();
+        }
+
+        [Fact]
+        [Trait("Category", "Unit")]
         public async Task Marten_Controller_GetData()
         {
             var session = new Mock<IDocumentSession>();
