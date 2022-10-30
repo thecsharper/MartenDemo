@@ -20,6 +20,37 @@ namespace MartenDemo.Controllers
             _martenQueries = martenQueries;
         }
 
+        [HttpGet("create")]
+        [ProducesResponseType(typeof(MartenData), 200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public async Task<bool> Create([FromServices] IDocumentSession session)
+        {
+            for (int i = 0; i < 1000; i++)
+            {
+                session.Store(new MartenData() { Date = DateTime.UtcNow, Id = Guid.NewGuid(), Text = $"Text string {i}"});
+            }
+
+            await session.SaveChangesAsync();
+
+            _logger.LogInformation("Created test records");
+
+            return true;
+        }
+
+        [HttpGet("search")]
+        [ProducesResponseType(typeof(MartenData), 200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public List<MartenData> Search([FromServices] IDocumentSession session, [FromQuery] string input)
+        {
+            var output = _martenQueries.GetByString(input);
+
+            _logger.LogInformation(input);
+
+            return output;
+        }
+
         [HttpGet("single")]
         [ProducesResponseType(typeof(MartenData),200)]
         [ProducesResponseType(400)]

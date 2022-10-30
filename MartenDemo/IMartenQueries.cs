@@ -7,5 +7,7 @@ namespace MartenDemo
         MartenData GetSingleItem(Guid id);
 
         List<MartenData> GetManyItems(Guid id);
+
+        List<MartenData> GetByString(string input);
     }
 }
