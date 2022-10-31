@@ -28,7 +28,7 @@ namespace MartenDemo.Controllers
         {
             for (int i = 0; i < 1000; i++)
             {
-                session.Store(new MartenData() { Date = DateTime.UtcNow, Id = Guid.NewGuid(), Text = $"Text string {i}"});
+                session.Store(new MartenData() { Date = DateTime.UtcNow, Id = Guid.NewGuid(), Text = $"Text string {i}" });
             }
 
             await session.SaveChangesAsync();
@@ -65,13 +65,13 @@ namespace MartenDemo.Controllers
         }
 
         [HttpGet("single")]
-        [ProducesResponseType(typeof(MartenData),200)]
+        [ProducesResponseType(typeof(MartenData), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         public async Task<MartenData> Get([FromServices] IDocumentSession session, [FromQuery] MartenData martenData)
         {
             session.Store(martenData);
-            
+
             await session.SaveChangesAsync();
 
             var output = _martenQueries.GetSingleItem(martenData.Id);
@@ -114,6 +114,30 @@ namespace MartenDemo.Controllers
             _logger.LogInformation(output.Id.ToString());
 
             return session.Json.WriteById<MartenData>(output.Id, HttpContext);
+        }
+
+        [HttpGet("event")]
+        [ProducesResponseType(typeof(MartenData), 200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public string Event([FromServices] IDocumentSession session, [FromQuery] MartenData martenData)
+        {
+            var s = session.Events.StartStream<MartenData>(martenData);
+            session.SaveChanges();
+
+            martenData.Text = "Updated text";
+
+            // Append more events to the same stream
+            session.Events.Append(martenData.Id);
+            session.SaveChanges();
+
+            var stream = session.Events.FetchStream(s.Id);
+
+            var streamId = stream.First().StreamId.ToString();
+
+            _logger.LogInformation(streamId);
+
+            return streamId;
         }
     }
 }
