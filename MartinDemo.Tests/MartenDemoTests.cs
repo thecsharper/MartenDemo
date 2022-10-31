@@ -9,6 +9,7 @@ using Marten;
 using MartenDemo.Controllers;
 using MartenDemo.Models;
 using MartenDemo;
+using Marten.Events;
 
 namespace MartinDemo.Tests
 {
@@ -34,7 +35,7 @@ namespace MartinDemo.Tests
             mocker.Use<IMartenQueries>(mock => mock.GetSingleItem(It.IsAny<Guid>()) == martenInput);
             mocker.Use(_logger);
             var controller = mocker.CreateInstance<MartenController>();
-            
+
             var result = await controller.Get(session.Object, martenInput);
 
             result.Id.Should().Be(martenInput.Id);
@@ -168,6 +169,46 @@ namespace MartinDemo.Tests
             var martenQueriesMock = mocker.GetMock<IMartenQueries>();
             martenQueriesMock.VerifyAll();
         }
+
+        [Fact]
+        [Trait("Category", "Unit")]
+        public void Marten_Controller_Event()
+        {
+            var action = new Mock<StreamAction>();
+            action.SetupAllProperties();
+
+            var eventStore = new Mock<IEventStore>();
+
+            var guid = Guid.NewGuid();
+
+            var events = new Mock<IEvent>();
+            events.Setup(x => x.Id).Returns(guid);
+
+            var list = new List<IEvent>
+            {
+                events.Object
+            };
+
+            var session = new Mock<IDocumentSession>();
+            session.Setup(x => x.Events).Returns(eventStore.Object);
+
+            session.Setup(x => x.Events.FetchStream(It.IsAny<Guid>(), 0, DateTime.Now, 0)).Returns(list);
+            session.Setup(x => x.Events.StartStream(It.IsAny<MartenData>())).Returns(action.Object);
+
+            var martenInput = GetMartenData();
+
+            var mocker = new AutoMocker();
+            mocker.Use(_logger);
+            var controller = mocker.CreateInstance<MartenController>();
+
+            controller.Event(session.Object, martenInput);
+
+            VerifyLogging(Times.Once);
+
+            var martenQueriesMock = mocker.GetMock<IMartenQueries>();
+            martenQueriesMock.VerifyAll();
+        }
+
 
         private static MartenData GetMartenData()
         {
