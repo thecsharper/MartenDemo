@@ -131,6 +131,7 @@ namespace MartenDemo.Controllers
             session.Events.Append(martenData.Id);
             session.SaveChanges();
 
+            //TODO move to queries class to moq
             var stream = session.Events.FetchStream(s.Id);
 
             var streamId = stream.First().StreamId.ToString();
