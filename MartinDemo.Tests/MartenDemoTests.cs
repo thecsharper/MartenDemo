@@ -201,7 +201,7 @@ namespace MartinDemo.Tests
             mocker.Use(_logger);
             var controller = mocker.CreateInstance<MartenController>();
 
-            controller.Event(session.Object, martenInput);
+            controller.Event(martenInput);
 
             VerifyLogging(Times.Once);
 

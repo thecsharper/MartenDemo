@@ -120,25 +120,14 @@ namespace MartenDemo.Controllers
         [ProducesResponseType(typeof(MartenData), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public string Event([FromServices] IDocumentSession session, [FromQuery] MartenData martenData)
+        public string Event([FromQuery] MartenData martenData)
         {
-            var s = session.Events.StartStream<MartenData>(martenData);
-            session.SaveChanges();
+            var text = "Updated Text";
+            var output = _martenQueries.AddEvent(martenData, text);
 
-            martenData.Text = "Updated text";
+            _logger.LogInformation(output);
 
-            // Append more events to the same stream
-            session.Events.Append(martenData.Id);
-            session.SaveChanges();
-
-            //TODO move to queries class to moq
-            var stream = session.Events.FetchStream(s.Id);
-
-            var streamId = stream.First().StreamId.ToString();
-
-            _logger.LogInformation(streamId);
-
-            return streamId;
+            return output;
         }
     }
 }

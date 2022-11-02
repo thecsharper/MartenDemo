@@ -11,5 +11,7 @@ namespace MartenDemo
         List<MartenData> GetByString(string input);
 
         int GetCount();
+
+        string AddEvent(MartenData martenData, string updateText);
     }
 }

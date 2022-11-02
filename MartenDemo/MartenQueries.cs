@@ -39,5 +39,23 @@ namespace MartenDemo
 
             return output.Length;
         }
+
+        public string AddEvent(MartenData martenData, string updateText)
+        {
+            var streamAction = _documentSession.Events.StartStream<MartenData>(martenData);
+            _documentSession.SaveChanges();
+
+            martenData.Text = updateText;
+
+            // Append more events to the same stream
+            _documentSession.Events.Append(martenData.Id);
+            _documentSession.SaveChanges();
+
+            var stream = _documentSession.Events.FetchStream(streamAction.Id);
+
+            var streamId = stream.First().StreamId.ToString();
+
+            return streamId;
+        }
     }
 }
