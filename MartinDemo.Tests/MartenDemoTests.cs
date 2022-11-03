@@ -174,11 +174,6 @@ namespace MartinDemo.Tests
         [Trait("Category", "Unit")]
         public void Marten_Controller_Event()
         {
-            var action = new Mock<StreamAction>();
-            action.SetupAllProperties();
-
-            var eventStore = new Mock<IEventStore>();
-
             var guid = Guid.NewGuid();
 
             var events = new Mock<IEvent>();
@@ -190,25 +185,26 @@ namespace MartinDemo.Tests
             };
 
             var session = new Mock<IDocumentSession>();
-            session.Setup(x => x.Events).Returns(eventStore.Object);
-
             session.Setup(x => x.Events.FetchStream(It.IsAny<Guid>(), 0, DateTime.Now, 0)).Returns(list);
-            session.Setup(x => x.Events.StartStream(It.IsAny<MartenData>())).Returns(action.Object);
 
             var martenInput = GetMartenData();
 
+            var testString = "test string";
+
             var mocker = new AutoMocker();
+            mocker.Use<IMartenQueries>(mock => mock.AddEvent(It.IsAny<MartenData>(), It.IsAny<string>()) == testString);
             mocker.Use(_logger);
             var controller = mocker.CreateInstance<MartenController>();
 
-            controller.Event(martenInput);
+            var output = controller.Event(martenInput);
+
+            output.Should().Be(testString);
 
             VerifyLogging(Times.Once);
 
             var martenQueriesMock = mocker.GetMock<IMartenQueries>();
             martenQueriesMock.VerifyAll();
         }
-
 
         private static MartenData GetMartenData()
         {
