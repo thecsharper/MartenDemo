@@ -25,7 +25,7 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 builder.Services.AddMarten(connection);
-builder.Services.AddTransient<IMartenQueries, MartenQueries>();
+builder.Services.AddTransient<IMartenQueryBuilder, MartenQueryBuilder>();
 
 var app = builder.Build();
 

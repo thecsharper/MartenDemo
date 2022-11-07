@@ -2,7 +2,7 @@
 
 namespace MartenDemo
 {
-    public interface IMartenQueries
+    public interface IMartenQueryBuilder
     {
         MartenData GetSingleItem(Guid id);
 

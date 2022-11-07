@@ -12,9 +12,9 @@ namespace MartenDemo.Controllers
     public class MartenController : ControllerBase
     {
         private readonly ILogger<MartenController> _logger;
-        private readonly IMartenQueries _martenQueries;
+        private readonly IMartenQueryBuilder _martenQueries;
 
-        public MartenController(ILogger<MartenController> logger, IMartenQueries martenQueries)
+        public MartenController(ILogger<MartenController> logger, IMartenQueryBuilder martenQueries)
         {
             _logger = logger;
             _martenQueries = martenQueries;

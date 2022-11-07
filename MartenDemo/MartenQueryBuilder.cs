@@ -3,11 +3,11 @@ using MartenDemo.Models;
 
 namespace MartenDemo
 {
-    public class MartenQueries : IMartenQueries
+    public class MartenQueryBuilder : IMartenQueryBuilder
     {
         private readonly IDocumentSession _documentSession;
 
-        public MartenQueries(IDocumentSession documentSession)
+        public MartenQueryBuilder(IDocumentSession documentSession)
         {
             _documentSession = documentSession;
         }

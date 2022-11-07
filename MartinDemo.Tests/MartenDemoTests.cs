@@ -32,7 +32,7 @@ namespace MartinDemo.Tests
             var martenInput = GetMartenData();
 
             var mocker = new AutoMocker();
-            mocker.Use<IMartenQueries>(mock => mock.GetSingleItem(It.IsAny<Guid>()) == martenInput);
+            mocker.Use<IMartenQueryBuilder>(mock => mock.GetSingleItem(It.IsAny<Guid>()) == martenInput);
             mocker.Use(_logger);
             var controller = mocker.CreateInstance<MartenController>();
 
@@ -44,7 +44,7 @@ namespace MartinDemo.Tests
 
             VerifyLogging(Times.Once);
 
-            var martenQueriesMock = mocker.GetMock<IMartenQueries>();
+            var martenQueriesMock = mocker.GetMock<IMartenQueryBuilder>();
             martenQueriesMock.VerifyAll();
         }
 
@@ -66,7 +66,7 @@ namespace MartinDemo.Tests
 
             VerifyLogging(Times.Once);
 
-            var martenQueriesMock = mocker.GetMock<IMartenQueries>();
+            var martenQueriesMock = mocker.GetMock<IMartenQueryBuilder>();
             martenQueriesMock.VerifyAll();
         }
 
@@ -83,7 +83,7 @@ namespace MartinDemo.Tests
             martenList.Add(martenInput);
 
             var mocker = new AutoMocker();
-            mocker.Use<IMartenQueries>(mock => mock.GetByString(It.IsAny<string>()) == martenList);
+            mocker.Use<IMartenQueryBuilder>(mock => mock.GetByString(It.IsAny<string>()) == martenList);
             mocker.Use(_logger);
             var controller = mocker.CreateInstance<MartenController>();
 
@@ -95,7 +95,7 @@ namespace MartinDemo.Tests
 
             VerifyLogging(Times.Once);
 
-            var martenQueriesMock = mocker.GetMock<IMartenQueries>();
+            var martenQueriesMock = mocker.GetMock<IMartenQueryBuilder>();
             martenQueriesMock.VerifyAll();
         }
 
@@ -106,7 +106,7 @@ namespace MartinDemo.Tests
             var session = new Mock<IDocumentSession>();
 
             var mocker = new AutoMocker();
-            mocker.Use<IMartenQueries>(mock => mock.GetCount() == 10);
+            mocker.Use<IMartenQueryBuilder>(mock => mock.GetCount() == 10);
             mocker.Use(_logger);
             var controller = mocker.CreateInstance<MartenController>();
 
@@ -116,7 +116,7 @@ namespace MartinDemo.Tests
 
             VerifyLogging(Times.Once);
 
-            var martenQueriesMock = mocker.GetMock<IMartenQueries>();
+            var martenQueriesMock = mocker.GetMock<IMartenQueryBuilder>();
             martenQueriesMock.VerifyAll();
         }
 
@@ -133,7 +133,7 @@ namespace MartinDemo.Tests
             martenList.Add(martenInput);
 
             var mocker = new AutoMocker();
-            mocker.Use<IMartenQueries>(mock => mock.GetManyItems(It.IsAny<Guid>()) == martenList);
+            mocker.Use<IMartenQueryBuilder>(mock => mock.GetManyItems(It.IsAny<Guid>()) == martenList);
             mocker.Use(_logger);
             var controller = mocker.CreateInstance<MartenController>();
 
@@ -145,7 +145,7 @@ namespace MartinDemo.Tests
 
             VerifyLogging(Times.Once);
 
-            var martenQueriesMock = mocker.GetMock<IMartenQueries>();
+            var martenQueriesMock = mocker.GetMock<IMartenQueryBuilder>();
             martenQueriesMock.VerifyAll();
         }
 
@@ -158,7 +158,7 @@ namespace MartinDemo.Tests
             var martenInput = GetMartenData();
 
             var mocker = new AutoMocker();
-            mocker.Use<IMartenQueries>(mock => mock.GetSingleItem(It.IsAny<Guid>()) == martenInput);
+            mocker.Use<IMartenQueryBuilder>(mock => mock.GetSingleItem(It.IsAny<Guid>()) == martenInput);
             mocker.Use(_logger);
             var controller = mocker.CreateInstance<MartenController>();
 
@@ -166,7 +166,7 @@ namespace MartinDemo.Tests
 
             VerifyLogging(Times.Once);
 
-            var martenQueriesMock = mocker.GetMock<IMartenQueries>();
+            var martenQueriesMock = mocker.GetMock<IMartenQueryBuilder>();
             martenQueriesMock.VerifyAll();
         }
 
@@ -192,7 +192,7 @@ namespace MartinDemo.Tests
             var testString = "test string";
 
             var mocker = new AutoMocker();
-            mocker.Use<IMartenQueries>(mock => mock.AddEvent(It.IsAny<MartenData>(), It.IsAny<string>()) == testString);
+            mocker.Use<IMartenQueryBuilder>(mock => mock.AddEvent(It.IsAny<MartenData>(), It.IsAny<string>()) == testString);
             mocker.Use(_logger);
             var controller = mocker.CreateInstance<MartenController>();
 
@@ -202,7 +202,7 @@ namespace MartinDemo.Tests
 
             VerifyLogging(Times.Once);
 
-            var martenQueriesMock = mocker.GetMock<IMartenQueries>();
+            var martenQueriesMock = mocker.GetMock<IMartenQueryBuilder>();
             martenQueriesMock.VerifyAll();
         }
 
