@@ -16,8 +16,8 @@ namespace MartinDemo.AcceptanceTests
         }
 
         [Theory]
-        [InlineData("/search")]
-        public async Task ProductSearchImage_valid_message_returns_global_event_id(string url)
+        [InlineData("/Marten/search?input=test")]
+        public async Task Search_api_returns_result(string url)
         {
             var options = new WebApplicationFactoryClientOptions { AllowAutoRedirect = false };
             var client = _factory.CreateClient(options);
@@ -28,6 +28,5 @@ namespace MartinDemo.AcceptanceTests
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             response.Content.Headers.ContentType!.ToString().Should().Be("application/json; charset=utf-8");
         }
-
     }
 }
