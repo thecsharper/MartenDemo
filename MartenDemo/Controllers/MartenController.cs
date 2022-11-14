@@ -45,7 +45,7 @@ namespace MartenDemo.Controllers
         [ProducesResponseType(typeof(MartenData), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public List<MartenData> Search([FromServices] IDocumentSession session, [FromQuery] string input, SearchParameters parameters)
+        public List<MartenData> Search([FromServices] IDocumentSession session, [FromQuery] string input, [FromQuery] SearchParameters parameters)
         {
             var output = _martenQueries.GetByString(input, parameters).AsQueryable();
 
