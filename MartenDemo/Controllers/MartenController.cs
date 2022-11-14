@@ -4,6 +4,9 @@ using Marten;
 using Marten.AspNetCore;
 
 using MartenDemo.Models;
+using MartenDemo.Helpers;
+using Marten.Pagination;
+using Newtonsoft.Json;
 
 namespace MartenDemo.Controllers
 {
@@ -42,13 +45,27 @@ namespace MartenDemo.Controllers
         [ProducesResponseType(typeof(MartenData), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public List<MartenData> Search([FromServices] IDocumentSession session, [FromQuery] string input)
+        public List<MartenData> Search([FromServices] IDocumentSession session, [FromQuery] string input, SearchParameters parameters)
         {
-            var output = _martenQueries.GetByString(input);
+            var output = _martenQueries.GetByString(input, parameters).AsQueryable();
+
+            var result = Paging<MartenData>.ToPagedList(output.OrderBy(x => x.Text), parameters.PageNumber, parameters.PageSize);
+
+            var metadata = new
+            {
+                result.TotalCount,
+                result.PageSize,
+                result.CurrentPage,
+                result.TotalPages,
+                result.HasNext,
+                result.HasPrevious
+            };
+
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
             _logger.LogInformation(input);
 
-            return output;
+            return result;
         }
 
         [HttpGet("count")]

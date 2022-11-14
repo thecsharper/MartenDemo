@@ -1,4 +1,5 @@
 ﻿using Marten;
+using MartenDemo.Helpers;
 using MartenDemo.Models;
 
 namespace MartenDemo
@@ -26,11 +27,15 @@ namespace MartenDemo
             return output;
         }
 
-        public List<MartenData> GetByString(string input)
+        public List<MartenData> GetByString(string input, SearchParameters parameters)
         {
             var output = _documentSession.Query<MartenData>().Where(x => x.Text!.Contains(input)).ToList();
 
-            return output;
+            return output
+                .OrderBy(on => on.Text)
+                .Skip((parameters.PageNumber - 1) * parameters.PageSize)
+                .Take(parameters.PageSize)
+                .ToList();
         }
 
         public int GetCount()

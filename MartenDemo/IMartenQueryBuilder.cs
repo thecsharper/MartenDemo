@@ -1,4 +1,5 @@
-﻿using MartenDemo.Models;
+﻿using MartenDemo.Helpers;
+using MartenDemo.Models;
 
 namespace MartenDemo
 {
@@ -8,7 +9,7 @@ namespace MartenDemo
 
         List<MartenData> GetManyItems(Guid id);
 
-        List<MartenData> GetByString(string input);
+        List<MartenData> GetByString(string input, SearchParameters parameters);
 
         int GetCount();
 

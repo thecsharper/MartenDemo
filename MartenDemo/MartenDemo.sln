@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MartenDemo", "MartenDemo.cs
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MartinDemo.Tests", "..\MartinDemo.Tests\MartinDemo.Tests.csproj", "{FD96DEBE-C513-4F5D-8D10-C4C48AABC30C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MartinDemo.AcceptanceTests", "..\MartinDemo.AcceptanceTests\MartinDemo.AcceptanceTests.csproj", "{360412F1-9985-430E-9C9D-9B2B9C37A2C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MartinDemo.AcceptanceTests", "..\MartinDemo.AcceptanceTests\MartinDemo.AcceptanceTests.csproj", "{360412F1-9985-430E-9C9D-9B2B9C37A2C1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
