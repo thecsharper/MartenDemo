@@ -10,6 +10,7 @@ using MartenDemo.Controllers;
 using MartenDemo.Models;
 using MartenDemo;
 using Marten.Events;
+using MartenDemo.Helpers;
 
 namespace MartinDemo.Tests
 {
@@ -82,12 +83,18 @@ namespace MartinDemo.Tests
 
             martenList.Add(martenInput);
 
+            var searchParamters = new SearchParameters
+            {
+                PageNumber = 1,
+                PageSize = 10
+            };
+
             var mocker = new AutoMocker();
-            mocker.Use<IMartenQueryBuilder>(mock => mock.GetByString(It.IsAny<string>()) == martenList);
+            mocker.Use<IMartenQueryBuilder>(mock => mock.GetByString(It.IsAny<string>(), It.IsAny<SearchParameters>()) == martenList);
             mocker.Use(_logger);
             var controller = mocker.CreateInstance<MartenController>();
 
-            var result = controller.Search(session.Object, "Test Text");
+            var result = controller.Search(session.Object, "Test Text", searchParamters);
 
             result.First().Id.Should().Be(martenInput.Id);
             result.First().Date.Should().Be(martenInput.Date);
