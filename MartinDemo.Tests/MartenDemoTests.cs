@@ -11,6 +11,9 @@ using MartenDemo.Models;
 using MartenDemo;
 using Marten.Events;
 using MartenDemo.Helpers;
+using Microsoft.AspNetCore.Http;
+using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
+using Microsoft.Extensions.Primitives;
 
 namespace MartinDemo.Tests
 {
@@ -89,9 +92,18 @@ namespace MartinDemo.Tests
                 PageSize = 10
             };
 
+            var testHeader = new Mock<IHeaderDictionary>();
+            testHeader.SetupGet(x => x["UserID"]).Returns("1001");
+            
+
+            var _mockHttpContext = new Mock<HttpContext>();
+            _mockHttpContext.Setup(x => x.Response.Headers)
+            .Returns(testHeader.Object);
+
             var mocker = new AutoMocker();
             mocker.Use<IMartenQueryBuilder>(mock => mock.GetByString(It.IsAny<string>(), It.IsAny<SearchParameters>()) == martenList);
             mocker.Use(_logger);
+            mocker.Use(_mockHttpContext);
             var controller = mocker.CreateInstance<MartenController>();
 
             var result = controller.Search(session.Object, "Test Text", searchParamters);
