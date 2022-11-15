@@ -61,7 +61,7 @@ namespace MartenDemo.Controllers
                 result.HasPrevious
             };
 
-            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+            Response?.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
             _logger.LogInformation(input);
 
