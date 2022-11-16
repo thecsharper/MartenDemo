@@ -16,7 +16,7 @@ namespace MartinDemo.AcceptanceTests
         }
 
         [Theory]
-        [InlineData("/Marten/search?input=test&PageNumber=1&PageSize=10")]
+        [InlineData("/marten/search?input=test&PageNumber=1&PageSize=10")]
         public async Task Search_api_returns_result(string url)
         {
             var options = new WebApplicationFactoryClientOptions { AllowAutoRedirect = false };

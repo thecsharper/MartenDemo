@@ -1,4 +1,6 @@
-﻿using Marten;
+﻿using System.Data;
+
+using Marten;
 using MartenDemo.Helpers;
 using MartenDemo.Models;
 
@@ -61,6 +63,17 @@ namespace MartenDemo
             var streamId = stream.First().StreamId.ToString();
 
             return streamId;
+        }
+
+        public bool GetStatus()
+        {
+            var output = _documentSession?.Connection?.FullState;
+
+            return output switch
+            {
+                ConnectionState.Open => true,
+                _ => false
+            };
         }
     }
 }

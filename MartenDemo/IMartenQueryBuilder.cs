@@ -14,5 +14,7 @@ namespace MartenDemo
         int GetCount();
 
         string AddEvent(MartenData martenData, string updateText);
+
+        bool GetStatus();
     }
 }

@@ -146,5 +146,18 @@ namespace MartenDemo.Controllers
 
             return output;
         }
+
+
+        [HttpGet("status")]
+        [ProducesResponseType(typeof(MartenData), 200)]
+        [ProducesResponseType(500)]
+        public bool Status()
+        {
+            var output = _martenQueries.GetStatus();
+
+            _logger.LogInformation("");
+
+            return true;
+        }
     }
 }
