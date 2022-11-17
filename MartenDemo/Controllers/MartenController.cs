@@ -155,7 +155,7 @@ namespace MartenDemo.Controllers
         {
             var output = _martenQueries.GetStatus();
 
-            _logger.LogInformation("");
+            _logger.LogInformation(output.ToString());
 
             return true;
         }

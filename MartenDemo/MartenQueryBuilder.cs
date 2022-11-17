@@ -67,9 +67,7 @@ namespace MartenDemo
 
         public bool GetStatus()
         {
-            var output = _documentSession?.Connection?.FullState;
-
-            return output switch
+            return _documentSession?.Connection?.FullState switch
             {
                 ConnectionState.Open => true,
                 _ => false
