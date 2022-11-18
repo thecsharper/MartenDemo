@@ -5,7 +5,6 @@ using Marten.AspNetCore;
 
 using MartenDemo.Models;
 using MartenDemo.Helpers;
-using Marten.Pagination;
 using Newtonsoft.Json;
 
 namespace MartenDemo.Controllers
