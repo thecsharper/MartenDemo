@@ -217,6 +217,23 @@ namespace MartinDemo.Tests
             martenQueriesMock.VerifyAll();
         }
 
+        [Fact]
+        [Trait("Category", "Unit")]
+        public void Marten_Controller_Status()
+        {
+            var mocker = new AutoMocker();
+            mocker.Use<IMartenQueryBuilder>(mock => mock.GetStatus() == true);
+            mocker.Use(_logger);
+            var controller = mocker.CreateInstance<MartenController>();
+
+            controller.Status();
+
+            VerifyLogging(Times.Once);
+
+            var martenQueriesMock = mocker.GetMock<IMartenQueryBuilder>();
+            martenQueriesMock.VerifyAll();
+        }
+
         private static MartenData GetMartenData()
         {
             return new MartenData
