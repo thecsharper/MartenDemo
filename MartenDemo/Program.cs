@@ -1,6 +1,5 @@
 using Marten;
 using MartenDemo;
-using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
