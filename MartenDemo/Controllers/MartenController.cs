@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 
 using Marten;
@@ -5,7 +6,7 @@ using Marten.AspNetCore;
 
 using MartenDemo.Models;
 using MartenDemo.Helpers;
-using Newtonsoft.Json;
+
 
 namespace MartenDemo.Controllers
 {
@@ -60,7 +61,7 @@ namespace MartenDemo.Controllers
                 result.HasPrevious
             };
 
-            Response?.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+            Response?.Headers.Add("X-Pagination", JsonSerializer.Serialize(metadata));
 
             _logger.LogInformation(input);
 
