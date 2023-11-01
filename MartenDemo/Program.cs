@@ -23,7 +23,7 @@ builder.Services.AddSwaggerGen(c =>
     //c.ResolveConflictingActions(x => x.First());
 });
 
-builder.Services.AddMarten(connection);
+builder.Services.AddMarten(connection!);
 builder.Services.AddTransient<IMartenQueryBuilder, MartenQueryBuilder>();
 
 var app = builder.Build();
