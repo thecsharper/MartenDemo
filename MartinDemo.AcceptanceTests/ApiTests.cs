@@ -1,6 +1,6 @@
 using System.Net;
 
-using FluentAssertions;
+using Shouldly;
 using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace MartinDemo.AcceptanceTests
@@ -25,8 +25,8 @@ namespace MartinDemo.AcceptanceTests
             var response = await client.GetAsync(url);
 
             response.EnsureSuccessStatusCode();
-            response.StatusCode.Should().Be(HttpStatusCode.OK);
-            response.Content.Headers.ContentType!.ToString().Should().Be("application/json; charset=utf-8");
+            response.StatusCode.ShouldBe(HttpStatusCode.OK);
+            response.Content.Headers.ContentType!.ToString().ShouldBe("application/json; charset=utf-8");
         }
     }
 }

@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using Microsoft.Extensions.Logging;
 
-using FluentAssertions;
+using Shouldly;
 using Moq;
 using Moq.AutoMock;
 using Marten;
@@ -11,9 +11,6 @@ using MartenDemo.Models;
 using MartenDemo;
 using Marten.Events;
 using MartenDemo.Helpers;
-using Microsoft.AspNetCore.Http;
-using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
-using Microsoft.Extensions.Primitives;
 
 namespace MartinDemo.Tests
 {
@@ -42,9 +39,9 @@ namespace MartinDemo.Tests
 
             var result = await controller.Get(session.Object, martenInput);
 
-            result.Id.Should().Be(martenInput.Id);
-            result.Date.Should().Be(martenInput.Date);
-            result.Text.Should().Be(martenInput.Text);
+            result.Id.ShouldBe(martenInput.Id);
+            result.Date.ShouldBe(martenInput.Date);
+            result.Text.ShouldBe(martenInput.Text);
 
             VerifyLogging(Times.Once);
 
@@ -66,7 +63,7 @@ namespace MartinDemo.Tests
 
             var result = await controller.Create(session.Object);
 
-            result.Should().Be(true);
+            result.ShouldBe(true);
 
             VerifyLogging(Times.Once);
 
@@ -100,9 +97,9 @@ namespace MartinDemo.Tests
 
             var result = controller.Search(session.Object, "Test Text", searchParamters);
 
-            result.First().Id.Should().Be(martenInput.Id);
-            result.First().Date.Should().Be(martenInput.Date);
-            result.First().Text.Should().Be(martenInput.Text);
+            result.First().Id.ShouldBe(martenInput.Id);
+            result.First().Date.ShouldBe(martenInput.Date);
+            result.First().Text.ShouldBe(martenInput.Text);
 
             VerifyLogging(Times.Once);
 
@@ -123,7 +120,7 @@ namespace MartinDemo.Tests
 
             var result = controller.Count(session.Object);
 
-            result.Should().Be(10);
+            result.ShouldBe(10);
 
             VerifyLogging(Times.Once);
 
@@ -150,9 +147,9 @@ namespace MartinDemo.Tests
 
             var result = await controller.GetData(session.Object, martenInput);
 
-            result.First().Id.Should().Be(martenInput.Id);
-            result.First().Date.Should().Be(martenInput.Date);
-            result.First().Text.Should().Be(martenInput.Text);
+            result.First().Id.ShouldBe(martenInput.Id);
+            result.First().Date.ShouldBe(martenInput.Date);
+            result.First().Text.ShouldBe(martenInput.Text);
 
             VerifyLogging(Times.Once);
 
@@ -209,7 +206,7 @@ namespace MartinDemo.Tests
 
             var output = controller.Event(martenInput);
 
-            output.Should().Be(testString);
+            output.ShouldBe(testString);
 
             VerifyLogging(Times.Once);
 
