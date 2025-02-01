@@ -120,17 +120,19 @@ namespace MartenDemo.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public Task Stream([FromServices] IDocumentSession session, [FromQuery] MartenData martenData)
+        public async Task Stream([FromServices] IDocumentSession session, [FromQuery] MartenData martenData)
         {
             session.Store(martenData);
 
-            session.SaveChanges();
+            await session.SaveChangesAsync();
 
             var output = _martenQueries.GetSingleItem(martenData.Id);
 
             _logger.LogInformation(output.Id.ToString());
 
-            return session.Json.WriteById<MartenData>(output.Id, HttpContext);
+            await session.Json.WriteById<MartenData>(output.Id, HttpContext);
+            
+            return;
         }
 
         [HttpGet("event")]
