@@ -12,16 +12,10 @@ namespace MartenDemo.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class MartenController : ControllerBase
+    public class MartenController(ILogger<MartenController> logger, IMartenQueryBuilder martenQueries) : ControllerBase
     {
-        private readonly ILogger<MartenController> _logger;
-        private readonly IMartenQueryBuilder _martenQueries;
-
-        public MartenController(ILogger<MartenController> logger, IMartenQueryBuilder martenQueries)
-        {
-            _logger = logger;
-            _martenQueries = martenQueries;
-        }
+        private readonly ILogger<MartenController> _logger = logger;
+        private readonly IMartenQueryBuilder _martenQueries = martenQueries;
 
         [HttpGet("create")]
         [ProducesResponseType(typeof(bool), 200)]
