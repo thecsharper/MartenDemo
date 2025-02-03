@@ -95,7 +95,7 @@ namespace MartinDemo.Tests
 
             var controller = mocker.CreateInstance<MartenController>();
 
-            var result = controller.Search(session.Object, "Test Text", searchParamters);
+            var result = controller.Search("Test Text", searchParamters);
 
             result.First().Id.ShouldBe(martenInput.Id);
             result.First().Date.ShouldBe(martenInput.Date);
@@ -118,7 +118,7 @@ namespace MartinDemo.Tests
             mocker.Use(_logger);
             var controller = mocker.CreateInstance<MartenController>();
 
-            var result = controller.Count(session.Object);
+            var result = controller.Count();
 
             result.ShouldBe(10);
 

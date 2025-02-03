@@ -39,7 +39,7 @@ namespace MartenDemo.Controllers
         [ProducesResponseType(typeof(MartenData), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public List<MartenData> Search([FromServices] IDocumentSession session, [FromQuery] string input, [FromQuery] SearchParameters parameters)
+        public List<MartenData> Search([FromQuery] string input, [FromQuery] SearchParameters parameters)
         {
             var output = _martenQueries.GetByString(input, parameters).AsQueryable();
 
@@ -66,7 +66,7 @@ namespace MartenDemo.Controllers
         [ProducesResponseType(typeof(int), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public int Count([FromServices] IDocumentSession session)
+        public int Count()
         {
             var output = _martenQueries.GetCount();
 
