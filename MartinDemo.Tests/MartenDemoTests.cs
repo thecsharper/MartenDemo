@@ -159,7 +159,7 @@ namespace MartinDemo.Tests
 
         [Fact]
         [Trait("Category", "Unit")]
-        public void Marten_Controller_Stream()
+        public async Task Marten_Controller_Stream()
         {
             var session = new Mock<IDocumentSession>();
 
@@ -170,7 +170,7 @@ namespace MartinDemo.Tests
             mocker.Use(_logger);
             var controller = mocker.CreateInstance<MartenController>();
 
-            controller.Stream(session.Object, martenInput);
+            await controller.Stream(session.Object, martenInput);
 
             VerifyLogging(Times.Once);
 
