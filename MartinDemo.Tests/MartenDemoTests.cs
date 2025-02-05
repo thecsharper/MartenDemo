@@ -170,6 +170,7 @@ namespace MartinDemo.Tests
             mocker.Use(_logger);
             var controller = mocker.CreateInstance<MartenController>();
 
+            // TODO need to mock context
             await controller.Stream(session.Object, martenInput);
 
             VerifyLogging(Times.Once);
@@ -193,7 +194,7 @@ namespace MartinDemo.Tests
             };
 
             var session = new Mock<IDocumentSession>();
-            session.Setup(x => x.Events.FetchStream(It.IsAny<Guid>(), 0, DateTime.Now, 0)).Returns(list);
+            session.Setup(x => x.Events.FetchStreamAsync(It.IsAny<Guid>(), 0, It.IsAny<DateTimeOffset>(), 0, It.IsAny<CancellationToken>())).ReturnsAsync(list);
 
             var martenInput = GetMartenData();
 
