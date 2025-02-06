@@ -11,6 +11,7 @@ using MartenDemo.Models;
 using MartenDemo;
 using Marten.Events;
 using MartenDemo.Helpers;
+using Microsoft.AspNetCore.Http;
 
 namespace MartinDemo.Tests
 {
@@ -166,6 +167,7 @@ namespace MartinDemo.Tests
             var martenInput = GetMartenData();
 
             var mocker = new AutoMocker();
+            var httpContextMock = mocker.GetMock<HttpContext>();
             mocker.Use<IMartenQueryBuilder>(mock => mock.GetSingleItem(It.IsAny<Guid>()) == martenInput);
             mocker.Use(_logger);
             var controller = mocker.CreateInstance<MartenController>();
