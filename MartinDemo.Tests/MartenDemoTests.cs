@@ -170,6 +170,7 @@ namespace MartinDemo.Tests
             var httpContextMock = mocker.GetMock<HttpContext>();
             mocker.Use<IMartenQueryBuilder>(mock => mock.GetSingleItem(It.IsAny<Guid>()) == martenInput);
             mocker.Use(_logger);
+            
             var controller = mocker.CreateInstance<MartenController>();
 
             // TODO need to mock context
