@@ -12,6 +12,9 @@ using MartenDemo;
 using Marten.Events;
 using MartenDemo.Helpers;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+using System.Security.Principal;
 
 namespace MartinDemo.Tests
 {
@@ -170,8 +173,33 @@ namespace MartinDemo.Tests
             var httpContextMock = mocker.GetMock<HttpContext>();
             mocker.Use<IMartenQueryBuilder>(mock => mock.GetSingleItem(It.IsAny<Guid>()) == martenInput);
             mocker.Use(_logger);
-            
+
+
+            var identity = new GenericIdentity("some name", "test");
+            var contextUser = new ClaimsPrincipal(identity); //add claims as needed
+
+            //...then set user and other required properties on the httpContext as needed
+            var httpContext = new DefaultHttpContext()
+            {
+                User = contextUser
+            };
+
+            //Controller needs a controller context to access HttpContext
+            var controllerContext = new ControllerContext()
+            {
+                HttpContext = httpContext,
+            };
+
+
+            var responseMock = new Mock<HttpResponse>();
+            var memoryStream = new MemoryStream();
+
+            responseMock.Setup(r => r.Body).Returns(memoryStream);
+            httpContextMock.Setup(ctx => ctx.Response).Returns(responseMock.Object);
+
+
             var controller = mocker.CreateInstance<MartenController>();
+            controller.ControllerContext.HttpContext = httpContext;
 
             // TODO need to mock context
             await controller.Stream(session.Object, martenInput);
