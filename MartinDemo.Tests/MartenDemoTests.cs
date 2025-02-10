@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Security.Principal;
+using Marten.AspNetCore;
 
 namespace MartinDemo.Tests
 {
@@ -171,37 +172,25 @@ namespace MartinDemo.Tests
 
             var mocker = new AutoMocker();
             var httpContextMock = mocker.GetMock<HttpContext>();
+            httpContextMock.SetupAllProperties();
             mocker.Use<IMartenQueryBuilder>(mock => mock.GetSingleItem(It.IsAny<Guid>()) == martenInput);
             mocker.Use(_logger);
 
-
-            var identity = new GenericIdentity("some name", "test");
-            var contextUser = new ClaimsPrincipal(identity); //add claims as needed
-
-            //...then set user and other required properties on the httpContext as needed
-            var httpContext = new DefaultHttpContext()
-            {
-                User = contextUser
-            };
-
-            //Controller needs a controller context to access HttpContext
-            var controllerContext = new ControllerContext()
-            {
-                HttpContext = httpContext,
-            };
-
-
+            var martenQueryBuilder = new Mock<IMartenQueryBuilder>();
+            martenQueryBuilder.Setup(mock => mock.GetSingleItem(It.IsAny<Guid>())).Returns(martenInput);
             var responseMock = new Mock<HttpResponse>();
             var memoryStream = new MemoryStream();
 
             responseMock.Setup(r => r.Body).Returns(memoryStream);
             httpContextMock.Setup(ctx => ctx.Response).Returns(responseMock.Object);
+            
+            var controller = new MartenController(_logger.Object, martenQueryBuilder.Object);
 
-
-            var controller = mocker.CreateInstance<MartenController>();
-            controller.ControllerContext.HttpContext = httpContext;
-
-            // TODO need to mock context
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContextMock.Object
+            };
+            
             await controller.Stream(session.Object, martenInput);
 
             VerifyLogging(Times.Once);
